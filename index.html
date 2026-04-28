@@ -18,7 +18,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 --kaala:#7c4a3a;--kaala2:#ede0d4;
 --vishwa:#4a6a8c;--vishwa2:#d4e0ed;
 --turiya:#4a7c6f;--turiya2:#d4ede8;
---gold:#b89a4a;--calm:#2a7a6a;
+--gold:#b89a4a;--calm:#2a7a6a;--calm-bg:#e0eeeb;--calm-bdr:#3a8a7a;--calm-text:#1a5a4a;
+--ok:#3a7a4a;--ok-bg:#e4ede6;--ok-bdr:#4a8a5a;
+--warn:#b89a4a;--warn-bg:#f0ebe0;--warn-bdr:#c8aa5a;--warn-text:#8a7030;
+--alert:#c47a5a;--alert-bg:#f0e6e0;--alert-bdr:#d48a6a;--alert-text:#8a4a30;
 --r:8px;--rl:14px
 }
 @media(prefers-color-scheme:dark){:root{
@@ -29,7 +32,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 --kaala:#b87060;--kaala2:#3a2018;
 --vishwa:#7a9ac0;--vishwa2:#1a2838;
 --turiya:#5a9c8c;--turiya2:#1a3530;
---gold:#c8aa5a;--calm:#5abaaa
+--gold:#c8aa5a;--calm:#5abaaa;--calm-bg:#1a2e2a;--calm-bdr:#3a8a7a;--calm-text:#8adaca;
+--ok:#6aba7a;--ok-bg:#1a2e1e;--ok-bdr:#4a8a5a;
+--warn:#d8ba6a;--warn-bg:#2e2a1a;--warn-bdr:#c8aa5a;--warn-text:#e8ca7a;
+--alert:#e89a7a;--alert-bg:#2e1e1a;--alert-bdr:#d48a6a;--alert-text:#f0aa8a
 }}
 .wrap{max-width:520px;margin:0 auto;padding:1.5rem 1rem 5rem}
 .head{text-align:center;margin-bottom:1.5rem}
@@ -87,17 +93,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .r-move-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--calm);margin-bottom:5px}
 .r-move-text{font-size:13px;line-height:1.6;color:var(--text)}
 .r-move-anchor{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic}
-.gfab{position:fixed;bottom:24px;right:16px;z-index:100;width:54px;height:54px;border-radius:50%;background:var(--calm);color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 12px rgba(0,0,0,0.25);font-family:inherit}
-.gfab:active{transform:scale(0.94)}
-.gov{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.5);overflow-y:auto}
-.gov.open{display:block}
-.gov-inner{background:var(--bg);max-width:520px;min-height:100%;margin:0 auto;padding:1.5rem 1rem 2rem;position:relative}
-.gov-close{position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:22px;color:var(--text3);cursor:pointer}
-.gov h2{font-size:18px;font-weight:600;margin-bottom:6px}
-.gov .gsub{font-size:12px;color:var(--text3);margin-bottom:1rem}
-.b-circle{width:160px;height:160px;border-radius:50%;background:var(--calm);margin:1rem auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;letter-spacing:.5px;transition:transform 4s ease-in-out;text-align:center}
-.b-count{text-align:center;font-size:12px;color:var(--text3);margin-top:8px}
-.b-stop{display:block;margin:1rem auto 0;padding:9px 24px;border-radius:var(--r);border:1px solid var(--bdr2);background:transparent;color:var(--text);font-size:13px;cursor:pointer;font-family:inherit}
+/* ── GROUND OVERLAY (from innersystems) ── */
+.ground-fab{position:fixed;bottom:24px;right:16px;z-index:100;width:62px;height:62px;border-radius:50%;background:var(--alert-bg);color:var(--alert);border:1px solid var(--alert-bdr);cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 16px rgba(0,0,0,0.15);font-family:inherit}
+.ground-fab:active{transform:scale(0.94)}
+.ground-ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,0.5);overflow-y:auto}
+.ground-ov.open{display:block;-webkit-overflow-scrolling:touch}
+.ground-inner{background:var(--bg);width:100%;max-width:540px;min-height:100%;padding:1rem 1rem 2rem;position:relative;margin:0 auto}
+.ground-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-top:.3rem}
+.ground-title{font-size:17px;font-weight:700;color:var(--text)}
+.ground-close{background:none;border:none;font-size:26px;cursor:pointer;color:var(--text3);line-height:1;padding:0}
+/* breathing arena */
+.arena{display:flex;flex-direction:column;align-items:center;padding:.5rem 0 1rem}
+.breath-timer{font-size:13px;color:var(--text3);margin-bottom:.5rem;font-variant-numeric:tabular-nums;min-height:20px}
+.rw{position:relative;width:240px;height:240px;margin-bottom:1rem}
+.rw canvas{position:absolute;top:0;left:0}
+.cbtn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;-webkit-tap-highlight-color:transparent}
+.cph{font-size:13px;font-weight:600;color:#fff;pointer-events:none;text-align:center;padding:0 6px}
+.cpc{font-size:20px;font-weight:600;color:#fff;pointer-events:none;min-height:26px;text-align:center}
+.prow{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:.7rem}
+.pchip{display:flex;flex-direction:column;align-items:center;padding:5px 9px;border-radius:var(--r);border:1px solid var(--bdr);min-width:52px}
+.pchip.cur{border-color:var(--calm);background:var(--calm-bg)}
+.pn{font-size:11px;color:var(--text2)}
+.ps{font-size:12px;font-weight:600;margin-top:1px;color:var(--text)}
+.bcy{font-size:12px;color:var(--text3);margin-bottom:.7rem;min-height:18px;text-align:center}
+.bcr{display:flex;gap:8px;justify-content:center}
+.bct{padding:10px 24px;border-radius:var(--r);border:1px solid var(--bdr2);background:transparent;color:var(--text);font-size:13px;cursor:pointer;font-family:inherit}
+/* grounding techniques */
+.grnd-techs{display:flex;flex-direction:column;gap:10px}
+.grnd-card{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--rl);padding:1.2rem 1.1rem}
+.grnd-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
+.grnd-desc{font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.grnd-body{display:none}
+.grnd-body.open{display:block}
+.grnd-prompt{font-size:15px;font-weight:600;color:var(--text);text-align:center;padding:1.2rem .5rem;line-height:1.5}
+.grnd-counter{font-size:34px;font-weight:600;color:var(--calm);text-align:center;margin:.6rem 0}
+.grnd-sense{font-size:12.5px;color:var(--text3);text-align:center;margin-bottom:1rem}
+.grnd-btn{width:100%;padding:11px;border-radius:var(--r);border:1px solid var(--bdr2);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit;margin-top:4px}
+.grnd-btn:active{opacity:.7}
+.grnd-pulse{width:80px;height:80px;border-radius:50%;background:var(--calm-bg);margin:1rem auto;transition:transform .5s ease-in-out}
+.grnd-pulse.expand{transform:scale(1.3)}
+.grnd-done-q{font-size:14px;color:var(--text2);text-align:center;margin-bottom:14px;padding-top:4px}
+.grnd-done-btns{display:flex;gap:8px}
+.grnd-done-btn{flex:1;padding:11px;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:inherit;border:1px solid var(--bdr2);background:transparent;color:var(--text2)}
+.grnd-done-btn.settled{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-bdr)}
+.grnd-done-btn.still{background:var(--warn-bg);color:var(--warn-text);border-color:var(--warn-bdr)}
+.grnd-still-msg{font-size:13px;line-height:1.6;padding:10px 12px;border-radius:var(--r);border-left:3px solid var(--warn-bdr);background:var(--warn-bg);color:var(--warn-text);margin-top:8px;display:none}
+.grnd-still-msg.show{display:block}
 .reset{display:block;margin:1rem auto 0;padding:7px 18px;border-radius:var(--r);border:1px solid var(--bdr);background:transparent;color:var(--text3);font-size:11px;cursor:pointer;font-family:inherit}
 </style>
 </head>
@@ -271,16 +312,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 
 </div>
 
-<button class="gfab" onclick="openG()">Ground</button>
+<button class="ground-fab" onclick="openGround()">Ground</button>
 
-<div class="gov" id="gov">
-  <div class="gov-inner">
-    <button class="gov-close" onclick="closeG()">&times;</button>
-    <h2>Ground</h2>
-    <div class="gsub">Box breathing &middot; 4-4-4-4 &middot; Hardware maintenance, not philosophy.</div>
-    <div class="b-circle" id="bc">Begin</div>
-    <div class="b-count" id="bn">&nbsp;</div>
-    <button class="b-stop" onclick="stopB()">Stop</button>
+<div class="ground-ov" id="ground-overlay">
+  <div class="ground-inner">
+    <div class="ground-head">
+      <div class="ground-title">Ground</div>
+      <button class="ground-close" onclick="closeGround()">&times;</button>
+    </div>
+    <div class="grnd-techs" id="ground-list"></div>
   </div>
 </div>
 
@@ -404,44 +444,142 @@ function notice(){
   r.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// Ground — box breathing
-var bRun=false,bTimer=null,bPhase=0;
-var phases=[{l:'Inhale',d:4,s:1.4},{l:'Hold',d:4,s:1.4},{l:'Exhale',d:4,s:1.0},{l:'Hold',d:4,s:1.0}];
-function openG(){document.getElementById('gov').classList.add('open');startB();}
-function closeG(){stopB();document.getElementById('gov').classList.remove('open');}
-function startB(){
-  bRun=true;bPhase=0;
-  runPhase();
+// ── GROUND — full innersystems implementation ──
+var _audioCtx=null;
+function getAudioCtx(){if(!_audioCtx)_audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(_audioCtx.state==='suspended')_audioCtx.resume();return _audioCtx;}
+function beep(){try{var ctx=getAudioCtx();var o=ctx.createOscillator();var g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(660,ctx.currentTime);g.gain.setValueAtTime(0.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.15,ctx.currentTime+0.01);g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.4);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.45);}catch(e){}}
+function vibrate(ms){try{if(navigator.vibrate)navigator.vibrate(ms||80);}catch(e){}}
+
+var BREATHS=[
+  {nm:'Physiological sigh',sb:'9-second brake',ph:['Inhale','Inhale+','Exhale'],ti:[2,1,6],wh:'Sharp spike or seconds before you react.',de:'Double inhale then long exhale. Fastest physiological brake.'},
+  {nm:'Extended exhale',sb:'steady calm',ph:['Inhale','Exhale'],ti:[4,8],wh:'Tense but not flooded.',de:'Exhale twice as long as inhale. Vagus nerve activation.'}
+];
+var GRND_TECHS=[
+  {id:'gcold',title:'Cold water',desc:'Splash cold water on your face or wrists. Dive reflex drops heart rate instantly.',simple:true},
+  {id:'g54321',title:'5-4-3-2-1',desc:'Name things through each sense. Pulls attention from narrative into actual environment.',senses:[{label:'5 things you can see',count:5,prompt:'Look around. Name one thing you can see.'},{label:'4 things you can touch',count:4,prompt:'What can you physically feel?'},{label:'3 things you can hear',count:3,prompt:'What sounds are present?'},{label:'2 things you can smell',count:2,prompt:'What do you notice in the air?'},{label:'1 thing you can taste',count:1,prompt:'What taste is present?'}]},
+  {id:'gcontact',title:'Self-contact',desc:'Hand on your chest. Feel the weight and warmth. Vagal activation without another person.',dur:30},
+  {id:'gletgo',title:'Letting go of attention',desc:'Stop directing attention anywhere. Let it rest where it falls. Not meditation — stopping the effort of attending.',dur:60}
+];
+function buildGroundList(ctx){
+  var wrap=document.getElementById('ground-list');wrap.innerHTML='';
+  var bOrder=[0,1];
+  var gOrder=['gcold','g54321','gcontact','gletgo'];
+  bOrder.forEach(function(bi){
+    var b=BREATHS[bi];
+    var card=document.createElement('div');card.className='grnd-card';card.id='breath-card-'+bi;
+    card.innerHTML='<div class="grnd-title">'+b.nm+'</div><div class="grnd-desc">'+b.de+'</div><div class="grnd-body" id="bbody-'+bi+'"></div>';
+    var startBtn=document.createElement('button');startBtn.className='grnd-btn';startBtn.textContent='Start';
+    startBtn.onclick=function(){startBreathCard(bi);};
+    card.appendChild(startBtn);wrap.appendChild(card);
+  });
+  var techs=GRND_TECHS.filter(function(t){return gOrder.indexOf(t.id)>=0;});
+  techs.sort(function(a,b){return gOrder.indexOf(a.id)-gOrder.indexOf(b.id);});
+  techs.forEach(function(tech){
+    var card=document.createElement('div');card.className='grnd-card';card.id='grnd-'+tech.id;
+    card.innerHTML='<div class="grnd-title">'+tech.title+'</div><div class="grnd-desc">'+tech.desc+'</div><div class="grnd-body" id="body-'+tech.id+'"></div>';
+    var startBtn=document.createElement('button');startBtn.className='grnd-btn';startBtn.textContent='Start';
+    startBtn.onclick=function(){startGrounding(tech);};
+    card.appendChild(startBtn);wrap.appendChild(card);
+  });
 }
-function runPhase(){
-  if(!bRun)return;
-  var p=phases[bPhase];
-  var bc=document.getElementById('bc');
-  bc.textContent=p.l;
-  bc.style.transitionDuration=p.d+'s';
-  bc.style.transform='scale('+p.s+')';
-  var n=p.d;
-  document.getElementById('bn').textContent=n;
-  if(bTimer)clearInterval(bTimer);
-  bTimer=setInterval(function(){
-    n--;
-    document.getElementById('bn').textContent=n>0?n:'';
-    if(n<=0)clearInterval(bTimer);
-  },1000);
-  setTimeout(function(){
-    if(!bRun)return;
-    bPhase=(bPhase+1)%phases.length;
+
+var activeBreathStop=null;
+function startBreathCard(bi){
+  if(activeBreathStop)activeBreathStop();
+  var b=BREATHS[bi];
+  var body=document.getElementById('bbody-'+bi);body.classList.add('open');
+  var card=document.getElementById('breath-card-'+bi);card.querySelector('.grnd-btn').style.display='none';
+  var calmColor=getComputedStyle(document.documentElement).getPropertyValue('--calm').trim()||'#2a7a6a';
+  var BCX=120,BCY=120,BR=108,RMIN=46,RMAX=72,TK=10;
+  var total=b.ti.reduce(function(a,v){return a+v;},0);
+  var fracs=[0];var acc=0;b.ti.forEach(function(v){acc+=v;fracs.push(acc/total);});
+
+  body.innerHTML='<div class="arena"><div class="breath-timer" id="bt-'+bi+'">00:00</div><div class="rw"><canvas id="bc-'+bi+'" width="240" height="240"></canvas><button class="cbtn" id="cb-'+bi+'" style="width:92px;height:92px;background:'+calmColor+';border-radius:50%;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)"><span class="cph">Tap to start</span><span class="cpc" id="cc-'+bi+'"></span></button></div><div class="prow" id="pr-'+bi+'"></div><div style="text-align:center;margin-bottom:.7rem"><div style="font-size:12px;color:var(--text2);line-height:1.5">'+b.de+'</div></div><div class="bcy" id="cy-'+bi+'"></div><div class="bcr"><button class="bct" id="bs-'+bi+'">Stop</button></div></div>';
+  var pr=document.getElementById('pr-'+bi);b.ph.forEach(function(ph,i){var d=document.createElement('div');d.className='pchip';d.id='pc-'+bi+'-'+i;d.innerHTML='<span class="pn">'+ph+'</span><span class="ps">'+b.ti[i]+'s</span>';pr.appendChild(d);});
+
+  function drawRing(dotFrac,innerR){
+    var cv=document.getElementById('bc-'+bi);if(!cv)return;
+    var ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,240,240);
+    ctx.globalAlpha=running?1:0.3;
+    ctx.beginPath();ctx.arc(BCX,BCY,BR,0,Math.PI*2);ctx.strokeStyle=calmColor;ctx.lineWidth=2.5;ctx.stroke();
+    fracs.forEach(function(f){
+      var a=f*Math.PI*2-Math.PI/2;
+      var ox=BCX+Math.cos(a)*(BR-TK),oy=BCY+Math.sin(a)*(BR-TK);
+      var ix=BCX+Math.cos(a)*(BR+TK),iy=BCY+Math.sin(a)*(BR+TK);
+      ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ix,iy);ctx.strokeStyle=calmColor;ctx.lineWidth=3.5;ctx.lineCap='round';ctx.stroke();
+    });
+    if(innerR!==null&&innerR!==undefined){ctx.globalAlpha=running?0.25:0.1;ctx.beginPath();ctx.arc(BCX,BCY,innerR,0,Math.PI*2);ctx.fillStyle=calmColor;ctx.fill();}
+    ctx.globalAlpha=1;
+    if(dotFrac!==null&&dotFrac!==undefined){
+      var a=dotFrac*Math.PI*2-Math.PI/2;
+      var dx=BCX+Math.cos(a)*BR,dy=BCY+Math.sin(a)*BR;
+      ctx.beginPath();ctx.arc(dx,dy,9,0,Math.PI*2);ctx.fillStyle='#ffffff';ctx.fill();
+      ctx.beginPath();ctx.arc(dx,dy,7,0,Math.PI*2);ctx.fillStyle=calmColor;ctx.fill();
+      ctx.beginPath();ctx.arc(dx,dy,3,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.8)';ctx.fill();
+    }
+  }
+
+  drawRing(null,null);
+
+  var running=false,cyc=0,phi=0,raf=null,ci=null,timerStart=null,timerRaf=null,ir=RMIN;
+  var btn=document.getElementById('cb-'+bi);
+  var stopBtn=document.getElementById('bs-'+bi);
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);if(ci)clearInterval(ci);if(timerRaf)cancelAnimationFrame(timerRaf);body.classList.remove('open');body.innerHTML='';card.querySelector('.grnd-btn').style.display='';activeBreathStop=null;}
+  stopBtn.onclick=stop;
+  activeBreathStop=stop;
+  btn.onclick=function(){
+    if(running){stop();return;}
+    running=true;cyc=0;phi=0;ir=RMIN;timerStart=performance.now();
+    try{getAudioCtx();}catch(e){}
+    function tickT(){if(!running)return;var s=Math.floor((performance.now()-timerStart)/1000);var m=Math.floor(s/60);s=s%60;var e=document.getElementById('bt-'+bi);if(e)e.textContent=(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);timerRaf=requestAnimationFrame(tickT);}
+    timerRaf=requestAnimationFrame(tickT);
+    function runPhase(){
+      if(!running)return;
+      var ph=b.ph[phi];var dur=b.ti[phi];
+      beep();vibrate(80);
+      document.querySelectorAll('#pr-'+bi+' .pchip').forEach(function(c,i){c.classList.toggle('cur',i===phi);});
+      btn.querySelector('.cph').textContent=ph;
+      document.getElementById('cy-'+bi).textContent='Cycle '+(cyc+1);
+      var isI=ph.toLowerCase().startsWith('inhale');var isH=ph.toLowerCase().startsWith('hold');
+      var sR=ir,eR=isH?ir:(isI?RMAX:RMIN);var cv2=dur;
+      document.getElementById('cc-'+bi).textContent=cv2;
+      if(ci)clearInterval(ci);ci=setInterval(function(){cv2--;var e=document.getElementById('cc-'+bi);if(e)e.textContent=cv2>0?cv2:'';if(cv2<=0)clearInterval(ci);},1000);
+      var ps=performance.now(),dMs=dur*1000;
+      function fr(now){
+        if(!running)return;
+        var el=Math.min(now-ps,dMs);var frac=el/dMs;
+        var ease=isH?1:(0.5-0.5*Math.cos(Math.PI*frac));
+        var r=sR+(eR-sR)*ease;ir=r;
+        var sz=Math.round(r*2);btn.style.width=sz+'px';btn.style.height=sz+'px';
+        var dotF=fracs[phi]+(fracs[phi+1]-fracs[phi])*frac;
+        drawRing(dotF,r);
+        if(el<dMs){raf=requestAnimationFrame(fr);}
+        else{ir=eR;phi++;if(phi>=b.ph.length){phi=0;cyc++;}runPhase();}
+      }
+      raf=requestAnimationFrame(fr);
+    }
     runPhase();
-  },p.d*1000);
+  };
 }
-function stopB(){
-  bRun=false;
-  if(bTimer)clearInterval(bTimer);
-  var bc=document.getElementById('bc');
-  bc.textContent='Begin';
-  bc.style.transform='scale(1)';
-  document.getElementById('bn').textContent='\u00a0';
+function startGrounding(tech){
+  var body=document.getElementById('body-'+tech.id);body.classList.add('open');body.innerHTML='';
+  var card=document.getElementById('grnd-'+tech.id);var sb=card.querySelector('.grnd-btn');if(sb)sb.style.display='none';
+  if(tech.id==='gcold')runSimple(tech,body);
+  else if(tech.id==='g54321')run54321(tech,body,0,0);
+  else if(tech.id==='gcontact')runTimed(tech,body);
+  else if(tech.id==='gletgo')runTimed(tech,body);
 }
+function runSimple(tech,body){body.innerHTML='<div class="grnd-prompt" style="font-size:14px">Go splash cold water on your face or hold it on your wrists.</div><button class="grnd-btn" style="margin-top:12px" onclick="showDone(\''+tech.id+'\')">Done — I tried it</button>';}
+function run54321(tech,body,si,tapped){var s=tech.senses[si];body.innerHTML='<div class="grnd-prompt">'+s.prompt+'</div><div class="grnd-sense">'+s.label+'</div><div class="grnd-counter">'+(s.count-tapped)+'</div><button class="grnd-btn" id="tap-btn">Tap each time you notice one</button>';document.getElementById('tap-btn').onclick=function(){beep();vibrate(60);tapped++;if(tapped>=s.count){if(si+1<tech.senses.length)run54321(tech,body,si+1,0);else showDone2(tech.id,body);}else body.querySelector('.grnd-counter').textContent=(s.count-tapped);};}
+function runTimed(tech,body){body.innerHTML='<div class="grnd-prompt">'+(tech.id==='gcontact'?'Place one hand on your chest. Feel the weight and warmth.':'Stop directing your attention. Let it rest wherever it naturally falls.')+'</div><button class="grnd-btn" id="ts">Start</button>';document.getElementById('ts').onclick=function(){this.style.display='none';beep();body.innerHTML+='<div class="grnd-pulse" id="tp"></div><div class="grnd-counter" id="tc">'+tech.dur+'</div>';var rem=tech.dur;var pulse=false;var piv=setInterval(function(){pulse=!pulse;var e=document.getElementById('tp');if(e)e.classList.toggle('expand',pulse);},tech.id==='gletgo'?2500:1500);var iv=setInterval(function(){rem--;var e=document.getElementById('tc');if(e)e.textContent=rem;if(rem<=0){clearInterval(iv);clearInterval(piv);vibrate(200);showDone2(tech.id,body);}},1000);};}
+function showDone(id){var body=document.getElementById('body-'+id);body.innerHTML='<div class="grnd-done-q">How do you feel now?</div><div class="grnd-done-btns"><button class="grnd-done-btn settled" onclick="grndSettled(\''+id+'\')">More settled</button><button class="grnd-done-btn still" onclick="grndStill(\''+id+'\')">Still activated</button></div><div class="grnd-still-msg" id="still-'+id+'"></div>';}
+function showDone2(id,body){body.innerHTML='<div class="grnd-done-q">How do you feel now?</div><div class="grnd-done-btns"><button class="grnd-done-btn settled" onclick="grndSettled(\''+id+'\')">More settled</button><button class="grnd-done-btn still" onclick="grndStill(\''+id+'\')">Still activated</button></div><div class="grnd-still-msg" id="still-'+id+'"></div>';}
+function grndSettled(id){document.getElementById('body-'+id).innerHTML='<div class="grnd-prompt" style="font-size:14px;padding:.5rem 0">\u2713 Good. Stay here for a moment.</div>';}
+function grndStill(id){var remaining=GRND_TECHS.filter(function(t){return t.id!==id}).map(function(t){return t.title}).concat(BREATHS.map(function(b){return b.nm})).join(', ');var el=document.getElementById('still-'+id);el.textContent='Try another technique: '+remaining;el.classList.add('show');}
+
+function openGround(){document.getElementById('ground-overlay').classList.add('open');document.body.style.overflow='hidden';buildGroundList('general');}
+function closeGround(){document.getElementById('ground-overlay').classList.remove('open');document.body.style.overflow='';}
 </script>
 </body>
 </html>
