@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tri-Charge">
+<title>Tri-Charge</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1710;background:#faf9f7;-webkit-text-size-adjust:100%}
+@media(prefers-color-scheme:dark){body{color:#ede8dc;background:#1a1810}}
+:root{
+--bg:#faf9f7;--bg2:#f2f0eb;--bg3:#e8e4dc;
+--text:#1a1710;--text2:#5a5548;--text3:#9a9080;
+--bdr:rgba(0,0,0,0.1);--bdr2:rgba(0,0,0,0.2);
+--bheema:#b8763a;--bheema2:#f4e4cc;
+--kaala:#7c4a3a;--kaala2:#ede0d4;
+--vishwa:#4a6a8c;--vishwa2:#d4e0ed;
+--turiya:#4a7c6f;--turiya2:#d4ede8;
+--gold:#b89a4a;--calm:#2a7a6a;
+--r:8px;--rl:14px
+}
+@media(prefers-color-scheme:dark){:root{
+--bg:#1a1810;--bg2:#242018;--bg3:#2e2a1e;
+--text:#ede8dc;--text2:#b8b098;--text3:#7a7060;
+--bdr:rgba(255,255,255,0.1);--bdr2:rgba(255,255,255,0.2);
+--bheema:#d49560;--bheema2:#3a2a18;
+--kaala:#b87060;--kaala2:#3a2018;
+--vishwa:#7a9ac0;--vishwa2:#1a2838;
+--turiya:#5a9c8c;--turiya2:#1a3530;
+--gold:#c8aa5a;--calm:#5abaaa
+}}
+.wrap{max-width:520px;margin:0 auto;padding:1.5rem 1rem 5rem}
+.head{text-align:center;margin-bottom:1.5rem}
+.head h1{font-size:22px;font-weight:600;letter-spacing:.3px}
+.head .sub{font-size:13px;color:var(--text3);margin-top:4px;font-style:italic}
+.head .san{font-size:11px;color:var(--gold);margin-top:6px;letter-spacing:1px}
+.si{font-size:12px;color:var(--text3);margin-bottom:10px;line-height:1.5}
+.sec-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:1.2rem 0 .6rem;display:flex;align-items:center;gap:8px}
+.sec-dot{width:8px;height:8px;border-radius:50%}
+.sec-bheema .sec-dot{background:var(--bheema)}
+.sec-kaala .sec-dot{background:var(--kaala)}
+.sec-vishwa .sec-dot{background:var(--vishwa)}
+.sec-turiya .sec-dot{background:var(--turiya)}
+.item{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:border-color .2s,background .2s}
+.item:active{opacity:.85}
+.item.sel-bheema{background:var(--bheema2);border-color:var(--bheema)}
+.item.sel-kaala{background:var(--kaala2);border-color:var(--kaala)}
+.item.sel-vishwa{background:var(--vishwa2);border-color:var(--vishwa)}
+.item.sel-turiya{background:var(--turiya2);border-color:var(--turiya)}
+.item-inner{padding:11px 13px;display:flex;gap:10px;align-items:flex-start}
+.chk{width:16px;height:16px;border-radius:3px;border:2px solid var(--bdr2);flex-shrink:0;margin-top:2px;position:relative;background:var(--bg);transition:all .2s}
+.item.sel-bheema .chk{background:var(--bheema);border-color:var(--bheema)}
+.item.sel-kaala .chk{background:var(--kaala);border-color:var(--kaala)}
+.item.sel-vishwa .chk{background:var(--vishwa);border-color:var(--vishwa)}
+.item.sel-turiya .chk{background:var(--turiya);border-color:var(--turiya)}
+.chk::after{content:'';position:absolute;left:3px;top:0;width:5px;height:9px;border:2px solid var(--bg);border-top:none;border-left:none;transform:rotate(45deg);opacity:0;transition:opacity .15s}
+.item.sel-bheema .chk::after,.item.sel-kaala .chk::after,.item.sel-vishwa .chk::after,.item.sel-turiya .chk::after{opacity:1}
+.item-body{flex:1}
+.item-en{font-size:13px;line-height:1.5;color:var(--text)}
+.item-tag{font-size:10px;font-weight:600;letter-spacing:.4px;padding:1px 7px;border-radius:10px;display:inline-block;margin-top:5px}
+.tag-bheema{background:var(--bheema2);color:var(--bheema)}
+.tag-kaala{background:var(--kaala2);color:var(--kaala)}
+.tag-vishwa{background:var(--vishwa2);color:var(--vishwa)}
+.tag-turiya{background:var(--turiya2);color:var(--turiya)}
+.notice-btn{width:100%;padding:13px;border-radius:var(--r);border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:14px;cursor:pointer;font-family:inherit;margin-top:1rem;letter-spacing:.3px;-webkit-tap-highlight-color:transparent}
+.notice-btn:active{opacity:.7}
+.result{margin-top:1rem;background:var(--bg2);border-radius:var(--rl);padding:1.2rem;border:1px solid var(--bdr);display:none}
+.result.show{display:block}
+.result.bheema{border-left:3px solid var(--bheema)}
+.result.kaala{border-left:3px solid var(--kaala)}
+.result.vishwa{border-left:3px solid var(--vishwa)}
+.result.turiya{border-left:3px solid var(--turiya)}
+.result.mixed{border-left:3px solid var(--gold)}
+.r-charge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.r-charge.bheema{color:var(--bheema)}
+.r-charge.kaala{color:var(--kaala)}
+.r-charge.vishwa{color:var(--vishwa)}
+.r-charge.turiya{color:var(--turiya)}
+.r-charge.mixed{color:var(--gold)}
+.r-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px}
+.r-read{font-size:13px;line-height:1.6;color:var(--text2);margin-bottom:12px}
+.r-switch{font-size:12px;line-height:1.5;color:var(--text2);background:var(--bg3);padding:9px 11px;border-radius:var(--r);margin-bottom:12px;border-left:2px solid var(--gold)}
+.r-switch-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:3px}
+.r-move{padding:11px 13px;border-radius:var(--r);background:var(--bg3);border-left:3px solid var(--calm)}
+.r-move-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--calm);margin-bottom:5px}
+.r-move-text{font-size:13px;line-height:1.6;color:var(--text)}
+.r-move-anchor{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic}
+.gfab{position:fixed;bottom:24px;right:16px;z-index:100;width:54px;height:54px;border-radius:50%;background:var(--calm);color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 12px rgba(0,0,0,0.25);font-family:inherit}
+.gfab:active{transform:scale(0.94)}
+.gov{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.5);overflow-y:auto}
+.gov.open{display:block}
+.gov-inner{background:var(--bg);max-width:520px;min-height:100%;margin:0 auto;padding:1.5rem 1rem 2rem;position:relative}
+.gov-close{position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:22px;color:var(--text3);cursor:pointer}
+.gov h2{font-size:18px;font-weight:600;margin-bottom:6px}
+.gov .gsub{font-size:12px;color:var(--text3);margin-bottom:1rem}
+.b-circle{width:160px;height:160px;border-radius:50%;background:var(--calm);margin:1rem auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;letter-spacing:.5px;transition:transform 4s ease-in-out;text-align:center}
+.b-count{text-align:center;font-size:12px;color:var(--text3);margin-top:8px}
+.b-stop{display:block;margin:1rem auto 0;padding:9px 24px;border-radius:var(--r);border:1px solid var(--bdr2);background:transparent;color:var(--text);font-size:13px;cursor:pointer;font-family:inherit}
+.reset{display:block;margin:1rem auto 0;padding:7px 18px;border-radius:var(--r);border:1px solid var(--bdr);background:transparent;color:var(--text3);font-size:11px;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>Tri-Charge</h1>
+    <div class="sub">Which charge is firing right now?</div>
+    <div class="san">BHEEMA &middot; KAALA &middot; VISHWA &middot; TURIYA</div>
+  </div>
+
+  <p class="si">Select everything present right now. More than one is normal &mdash; that is the switch.</p>
+
+  <!-- BHEEMA -->
+  <div class="sec-label sec-bheema"><span class="sec-dot"></span>Bheema &mdash; the protector charge</div>
+
+  <div class="item" onclick="tog(this,'bheema',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I am carrying something that is not mine to carry &mdash; someone else's safety, mood, or outcome</div>
+      <span class="item-tag tag-bheema">Bheema &mdash; carrying</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'bheema',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I feel I must act because no one else will &mdash; the moral weight is on me</div>
+      <span class="item-tag tag-bheema">Bheema &mdash; duty</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'bheema',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I am performing being good &mdash; aware that someone is watching whether I do the right thing</div>
+      <span class="item-tag tag-bheema">Bheema &mdash; performing</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'bheema',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I am sustaining effort with no recognition coming back &mdash; and continuing anyway</div>
+      <span class="item-tag tag-bheema">Bheema &mdash; sustained</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'bheema',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">Someone is genuinely in need or being wronged &mdash; the drive is firing on real signal</div>
+      <span class="item-tag tag-bheema">Bheema &mdash; activated</span>
+    </div></div>
+  </div>
+
+  <!-- KAALA -->
+  <div class="sec-label sec-kaala"><span class="sec-dot"></span>Kaala &mdash; the punishing charge</div>
+
+  <div class="item" onclick="tog(this,'kaala',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I want them to feel what I felt &mdash; the pull is to expose, accuse, or settle the score</div>
+      <span class="item-tag tag-kaala">Kaala &mdash; settling</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'kaala',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">A counter-narrative is forming &mdash; building a case, gathering evidence, ready to deploy</div>
+      <span class="item-tag tag-kaala">Kaala &mdash; case-building</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'kaala',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I feel unjustly framed &mdash; shame is heavy and the urge to flip it outward is rising</div>
+      <span class="item-tag tag-kaala">Kaala &mdash; shame-flip</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'kaala',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I am turning the punishing inward &mdash; self-attack, contempt for myself, the same charge aimed at me</div>
+      <span class="item-tag tag-kaala">Kaala &mdash; inward</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'kaala',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">My protector effort just collapsed &mdash; and something sharper is moving in to take its place</div>
+      <span class="item-tag tag-kaala">Kaala &mdash; emerging</span>
+    </div></div>
+  </div>
+
+  <!-- VISHWA -->
+  <div class="sec-label sec-vishwa"><span class="sec-dot"></span>Vishwa &mdash; the inward charge</div>
+
+  <div class="item" onclick="tog(this,'vishwa',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">External effort feels exhausted &mdash; the pull is to retreat, dissolve, surrender it all</div>
+      <span class="item-tag tag-vishwa">Vishwa &mdash; retreat</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'vishwa',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">Ordinary things feel charged with meaning &mdash; connections, patterns, signs everywhere</div>
+      <span class="item-tag tag-vishwa">Vishwa &mdash; salience</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'vishwa',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I am sliding into spiritual intensity &mdash; grandeur, mission, cosmic significance rising</div>
+      <span class="item-tag tag-vishwa">Vishwa &mdash; intensity</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'vishwa',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I am isolating &mdash; avoiding contact, no anchors in the day, structure dropping away</div>
+      <span class="item-tag tag-vishwa">Vishwa &mdash; isolating</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'vishwa',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">Solitude feels like ground, not escape &mdash; quiet, sober, structured, depth as home</div>
+      <span class="item-tag tag-vishwa">Vishwa &mdash; integrated</span>
+    </div></div>
+  </div>
+
+  <!-- TURIYA -->
+  <div class="sec-label sec-turiya"><span class="sec-dot"></span>Turiya &mdash; none of the three</div>
+
+  <div class="item" onclick="tog(this,'turiya',4)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">My attention is free &mdash; I am choosing where it goes, nothing is pulling</div>
+      <span class="item-tag tag-turiya">Turiya &mdash; free</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'turiya',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">No case is forming, no one to rescue, nothing to retreat from &mdash; just present</div>
+      <span class="item-tag tag-turiya">Turiya &mdash; clear</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'turiya',3)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">The body is settled &mdash; no charge running, no urgency, breath is easy</div>
+      <span class="item-tag tag-turiya">Turiya &mdash; settled</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'turiya',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I can feel emotion without becoming it &mdash; there is space between me and what is arising</div>
+      <span class="item-tag tag-turiya">Turiya &mdash; witness</span>
+    </div></div>
+  </div>
+
+  <div class="item" onclick="tog(this,'turiya',2)">
+    <div class="item-inner"><div class="chk"></div><div class="item-body">
+      <div class="item-en">I could act from here &mdash; calm enough, clear enough, no charge driving the next move</div>
+      <span class="item-tag tag-turiya">Turiya &mdash; ready</span>
+    </div></div>
+  </div>
+
+  <button class="notice-btn" onclick="notice()">Notice</button>
+  <button class="reset" onclick="reset()">Clear</button>
+
+  <div class="result" id="r"></div>
+
+</div>
+
+<button class="gfab" onclick="openG()">Ground</button>
+
+<div class="gov" id="gov">
+  <div class="gov-inner">
+    <button class="gov-close" onclick="closeG()">&times;</button>
+    <h2>Ground</h2>
+    <div class="gsub">Box breathing &middot; 4-4-4-4 &middot; Hardware maintenance, not philosophy.</div>
+    <div class="b-circle" id="bc">Begin</div>
+    <div class="b-count" id="bn">&nbsp;</div>
+    <button class="b-stop" onclick="stopB()">Stop</button>
+  </div>
+</div>
+
+<script>
+var sel={bheema:0,kaala:0,vishwa:0,turiya:0};
+var counts={bheema:0,kaala:0,vishwa:0,turiya:0};
+function tog(el,k,w){
+  if(el.classList.contains('sel-'+k)){
+    el.classList.remove('sel-'+k);
+    sel[k]-=w;counts[k]--;
+  }else{
+    el.classList.add('sel-'+k);
+    sel[k]+=w;counts[k]++;
+  }
+}
+function reset(){
+  document.querySelectorAll('.item').forEach(function(el){
+    el.classList.remove('sel-bheema','sel-kaala','sel-vishwa','sel-turiya');
+  });
+  sel={bheema:0,kaala:0,vishwa:0,turiya:0};
+  counts={bheema:0,kaala:0,vishwa:0,turiya:0};
+  document.getElementById('r').classList.remove('show');
+}
+
+// Wisdom moves keyed to charge — drawn from Signal: three participants, two instructions, formula, music, speed envelope, attention.
+var moves={
+  bheema:{
+    name:'Bheema is firing',
+    read:'The protector charge is active. Effort is sustained, the moral weight feels yours, and recognition is not coming back. This is the disintegration vector \u2014 the hero drive dressed as duty.',
+    move:'Self-regulate first. The ego\'s primary duty is hardware maintenance, not rescue. If you collapse, no one is carried. Drop the load for ten minutes \u2014 not forever, just now \u2014 and check whether the need is real or the drive is filling silence.',
+    anchor:'Two instructions: self-regulate, then acknowledge what can receive signal.'
+  },
+  kaala:{
+    name:'Kaala is firing',
+    read:'The punishing charge is active. The pull is to settle, expose, or flip the shame outward. This is the same game in opposite direction \u2014 not justice, just a discharge route.',
+    move:'Self-defence is not coercion. But settling the score is. Stop the case-building for one cycle. Write it, do not send it. The charge needs to discharge \u2014 give it the body, not the keyboard.',
+    anchor:'Coercion is initiating override. Defence is stopping override. Settling a score is neither \u2014 it is the charge using you.'
+  },
+  vishwa:{
+    name:'Vishwa is firing',
+    read:'The inward charge is active. External solutions feel exhausted, salience is rising, the pull is to dissolve. With structure, this is depth. Without structure, this is the prodrome.',
+    move:'Solitude with structure is wisdom. Solitude without structure is risk. Anchor three things in the next hour: contact (one human), motion (walk or stretch), and a concrete task. Then the inward turn is safe.',
+    anchor:'The fallback when the speed envelope is wrong: slow down, open up, get quiet \u2014 with anchors, not without.'
+  },
+  turiya:{
+    name:'Turiya \u2014 the witness',
+    read:'No charge is running. Attention is free, the body is settled, nothing is pulling. This is not the absence of something \u2014 this is the ground state the three charges obscure.',
+    move:'Stay. No move needed. The instruction is to recognise this is the home position, not a rest stop between charges. Notice what it feels like so the body can find it again.',
+    anchor:'The witness is always present. The charges only obscure it. This is what receiving signal feels like.'
+  },
+  mixed:{
+    name:'A switch is happening',
+    read:'More than one charge is firing. This is the sequence: Bheema sustains, drains, then Kaala fires from exhaustion, then Vishwa retreats from shame. You are inside the switch, not just the charge.',
+    move:'Do not pick which charge is right. Step out of all three. The witness is not on the wheel. Sit with the body for two minutes \u2014 just sensation, no story \u2014 before any move. The switch loses force the moment it is seen.',
+    anchor:'Premature certainty is the single point of failure. Inside a switch, every charge feels like the truth. None of them are.'
+  }
+};
+
+function notice(){
+  var r=document.getElementById('r');
+  var totalCharges=sel.bheema+sel.kaala+sel.vishwa;
+  if(counts.bheema===0 && counts.kaala===0 && counts.vishwa===0 && counts.turiya===0){
+    r.className='result show mixed';
+    r.innerHTML='<div class="r-charge mixed">Nothing selected</div><div class="r-title">No state currently named</div><div class="r-read">Either nothing has surfaced yet, or the body has not been checked. Sit for thirty seconds and check again.</div>';
+    return;
+  }
+
+  // Pure Turiya — no charges firing
+  if(totalCharges===0 && counts.turiya>0){
+    var m=moves.turiya;
+    r.className='result show turiya';
+    r.innerHTML=
+      '<div class="r-charge turiya">'+m.name+'</div>'+
+      '<div class="r-title">Witness position &mdash; ground state</div>'+
+      '<div class="r-read">'+m.read+'</div>'+
+      '<div class="r-move"><div class="r-move-label">One move</div><div class="r-move-text">'+m.move+'</div><div class="r-move-anchor">'+m.anchor+'</div></div>';
+    r.scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
+
+  // Charges firing (turiya may also be selected = partial witness)
+  var charges=[];
+  if(sel.bheema>0)charges.push({k:'bheema',w:sel.bheema});
+  if(sel.kaala>0)charges.push({k:'kaala',w:sel.kaala});
+  if(sel.vishwa>0)charges.push({k:'vishwa',w:sel.vishwa});
+  charges.sort(function(a,b){return b.w-a.w});
+
+  var primary=charges[0].k;
+  var isMixed=charges.length>=2 && charges[1].w >= charges[0].w*0.5;
+  var partialWitness=counts.turiya>0;
+
+  var m;
+  var cls;
+  if(isMixed){
+    m=moves.mixed;
+    cls='mixed';
+  }else{
+    m=moves[primary];
+    cls=primary;
+  }
+
+  var switchHtml='';
+  if(isMixed){
+    var seq=charges.map(function(c){return c.k.charAt(0).toUpperCase()+c.k.slice(1)}).join(' \u2192 ');
+    switchHtml='<div class="r-switch"><div class="r-switch-label">Switch detected</div>'+seq+' &mdash; the wheel is turning. Catch it before the next pole.</div>';
+  }
+
+  var witnessHtml='';
+  if(partialWitness){
+    witnessHtml='<div class="r-switch" style="border-left-color:var(--turiya)"><div class="r-switch-label" style="color:var(--turiya)">Witness partially present</div>You are noticing the charge instead of being it. That gap is the move \u2014 stay with it, do not collapse back in.</div>';
+  }
+
+  r.className='result show '+cls;
+  r.innerHTML=
+    '<div class="r-charge '+cls+'">'+m.name+'</div>'+
+    '<div class="r-title">'+(isMixed?'Multiple charges, switch in motion':'Single charge dominant')+'</div>'+
+    '<div class="r-read">'+m.read+'</div>'+
+    switchHtml+
+    witnessHtml+
+    '<div class="r-move"><div class="r-move-label">One move</div><div class="r-move-text">'+m.move+'</div><div class="r-move-anchor">'+m.anchor+'</div></div>';
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Ground — box breathing
+var bRun=false,bTimer=null,bPhase=0;
+var phases=[{l:'Inhale',d:4,s:1.4},{l:'Hold',d:4,s:1.4},{l:'Exhale',d:4,s:1.0},{l:'Hold',d:4,s:1.0}];
+function openG(){document.getElementById('gov').classList.add('open');startB();}
+function closeG(){stopB();document.getElementById('gov').classList.remove('open');}
+function startB(){
+  bRun=true;bPhase=0;
+  runPhase();
+}
+function runPhase(){
+  if(!bRun)return;
+  var p=phases[bPhase];
+  var bc=document.getElementById('bc');
+  bc.textContent=p.l;
+  bc.style.transitionDuration=p.d+'s';
+  bc.style.transform='scale('+p.s+')';
+  var n=p.d;
+  document.getElementById('bn').textContent=n;
+  if(bTimer)clearInterval(bTimer);
+  bTimer=setInterval(function(){
+    n--;
+    document.getElementById('bn').textContent=n>0?n:'';
+    if(n<=0)clearInterval(bTimer);
+  },1000);
+  setTimeout(function(){
+    if(!bRun)return;
+    bPhase=(bPhase+1)%phases.length;
+    runPhase();
+  },p.d*1000);
+}
+function stopB(){
+  bRun=false;
+  if(bTimer)clearInterval(bTimer);
+  var bc=document.getElementById('bc');
+  bc.textContent='Begin';
+  bc.style.transform='scale(1)';
+  document.getElementById('bn').textContent='\u00a0';
+}
+</script>
+</body>
+</html>
