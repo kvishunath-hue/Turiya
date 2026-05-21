@@ -26,6 +26,7 @@
   --shadow:0 30px 80px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden;width:100%;max-width:100%;position:relative}
 html{scroll-behavior:smooth}
 body{
   background:
@@ -37,6 +38,7 @@ body{
   font-feature-settings:"ss01","ss02";
   -webkit-font-smoothing:antialiased;
   min-height:100vh;min-height:100dvh;
+  overscroll-behavior-x:none;
 }
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
@@ -87,6 +89,7 @@ body::before{
   display:grid;grid-template-columns:1.2fr 1fr;
   align-items:center;gap:64px;
   z-index:2;
+  overflow:hidden;
 }
 .hero::before{
   content:"";position:absolute;
@@ -162,6 +165,7 @@ body::before{
   position:relative;z-index:2;
   padding:100px 80px;
   border-top:1px solid var(--line);
+  overflow:hidden;
 }
 .section-eyebrow{
   font-family:'Inter',sans-serif;font-size:12px;letter-spacing:6px;
@@ -330,11 +334,14 @@ body::before{
 .tier-title{font-family:'Fraunces',serif;font-size:32px;color:var(--ivory);font-weight:500;letter-spacing:-.5px;margin-bottom:6px}
 .tier-sub{font-size:14px;color:var(--ivory-2);opacity:.7;font-style:italic;margin-bottom:28px;font-family:'Fraunces',serif}
 .tier-price{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;padding-bottom:24px;border-bottom:1px solid var(--line)}
-.tier-price .currency{font-family:'Fraunces',serif;font-size:22px;color:var(--ivory-2);font-weight:400}
-.tier-price .amount{font-family:'Fraunces',serif;font-size:52px;color:var(--ivory);font-weight:400;letter-spacing:-2px;line-height:1}
-.tier.featured .tier-price .amount{color:var(--saffron)}
-.tier-price .unit{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-left:4px}
-.tier-price-note{font-size:11px;color:var(--ivory-2);opacity:.55;margin-top:-16px;margin-bottom:28px;font-family:'Inter',sans-serif;letter-spacing:.5px}
+.tier-price .amount-text{
+  font-family:'Fraunces',serif;
+  font-size:36px;font-weight:400;
+  color:var(--ivory);letter-spacing:-.5px;line-height:1;
+  font-style:italic;
+}
+.tier.featured .tier-price .amount-text{color:var(--saffron)}
+.tier-price-note{font-size:11px;color:var(--ivory-2);opacity:.55;margin-top:8px;margin-bottom:28px;font-family:'Inter',sans-serif;letter-spacing:.5px}
 
 .tier-features{list-style:none;padding:0;margin:0}
 .tier-features li{
@@ -374,6 +381,7 @@ body::before{
     linear-gradient(180deg, rgba(14,26,43,.6), rgba(14,26,43,.9));
   border-top:1px solid var(--line);
   text-align:center;
+  overflow:hidden;
 }
 .contact h2{margin:0 auto 32px;max-width:780px}
 .contact .lede{font-size:19px;line-height:1.6;color:var(--ivory-2);opacity:.85;max-width:680px;margin:0 auto 48px}
@@ -779,7 +787,7 @@ footer.foot{
   <div class="reveal">
     <div class="section-eyebrow">06 · Investment</div>
     <h2>Three tiers — pick the one that fits the <em>opening-day ambition.</em></h2>
-    <p class="intro">All prices in Indian Rupees, exclusive of GST at 18%. Hardware is not included — quoted separately by the hardware partner. Final scope and price confirmed in a signed Statement of Work.</p>
+    <p class="intro">Each tier scopes a complete delivery package. Indicative pricing is shared on request, after a brief alignment call. Final scope and price are confirmed in a signed Statement of Work.</p>
   </div>
 
   <div class="tiers">
@@ -789,12 +797,9 @@ footer.foot{
       <div class="tier-title">Foundation</div>
       <div class="tier-sub">A complete, dignified deployment with the must-haves.</div>
       <div class="tier-price">
-        <span class="currency">₹</span>
-        <span class="amount">14</span>
-        <span class="currency">L</span>
-        <span class="unit">— ₹18 L</span>
+        <span class="amount-text">On Request</span>
       </div>
-      <div class="tier-price-note">Indicative · all-inclusive of software, content, and basic media</div>
+      <div class="tier-price-note">All-inclusive of software, content, and basic media</div>
       <ul class="tier-features">
         <li>Kiosk shell + 5 gallery modules</li>
         <li>Trilingual content (EN · हिं · తె) — written, edited, translated</li>
@@ -814,12 +819,9 @@ footer.foot{
       <div class="tier-title">Memorial</div>
       <div class="tier-sub">The full interpretive experience as we'd design it.</div>
       <div class="tier-price">
-        <span class="currency">₹</span>
-        <span class="amount">22</span>
-        <span class="currency">L</span>
-        <span class="unit">— ₹28 L</span>
+        <span class="amount-text">On Request</span>
       </div>
-      <div class="tier-price-note">Indicative · all-inclusive of software, content, photography &amp; film</div>
+      <div class="tier-price-note">All-inclusive of software, content, photography &amp; film</div>
       <ul class="tier-features">
         <li>Everything in Foundation</li>
         <li>3-day original photography campaign (~120 images)</li>
@@ -839,12 +841,9 @@ footer.foot{
       <div class="tier-title">Statue of Equality</div>
       <div class="tier-sub">Everything, including the immersive layer.</div>
       <div class="tier-price">
-        <span class="currency">₹</span>
-        <span class="amount">34</span>
-        <span class="currency">L</span>
-        <span class="unit">— ₹42 L</span>
+        <span class="amount-text">On Request</span>
       </div>
-      <div class="tier-price-note">Indicative · full programme + immersive &amp; outreach assets</div>
+      <div class="tier-price-note">Full programme + immersive &amp; outreach assets</div>
       <ul class="tier-features">
         <li>Everything in Memorial</li>
         <li>360° photography — full complex</li>
@@ -863,7 +862,7 @@ footer.foot{
   <div class="pricing-note reveal">
     <strong>Payment schedule.</strong> 25% on contract signature · 25% on content + design sign-off · 30% on software acceptance · 20% on go-live. <br><br>
     <strong>Out of scope.</strong> Hardware (touchscreens, mounts, audio amplification, network infrastructure) supplied by the project's hardware partner. Government clearances, location permissions, electrical and civil work at the site. <br><br>
-    <strong>GST.</strong> All prices exclusive. Applicable at 18% on the invoice value at the time of billing.
+    <strong>GST.</strong> All quotes are exclusive. Applicable at 18% on the invoice value at the time of billing.
   </div>
 </section>
 
@@ -916,7 +915,7 @@ footer.foot{
       </div>
       <div class="ci">
         <div class="lbl">Email</div>
-        <div class="val"><a href="mailto:hello@vkstudio.in">hello@vkstudio.in</a></div>
+        <div class="val"><a href="mailto:contact@vkstudio.in">contact@vkstudio.in</a></div>
       </div>
       <div class="ci">
         <div class="lbl">Based In</div>
@@ -924,7 +923,7 @@ footer.foot{
       </div>
     </div>
 
-    <a href="mailto:hello@vkstudio.in?subject=Ambedkar%20Memorial%20Gallery%20—%20Site%20Walk" class="cta-btn">
+    <a href="mailto:contact@vkstudio.in?subject=Ambedkar%20Memorial%20Gallery%20—%20Site%20Walk" class="cta-btn">
       <span>Request a Site Walk</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
